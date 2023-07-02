@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 
+import os
 from pathlib import Path
 
 # import environ
@@ -30,8 +31,8 @@ SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com' ]
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com','*' ]
+#ALLOWED_HOSTS = ['*']
 
 
 
@@ -83,23 +84,25 @@ WSGI_APPLICATION = 'Bet_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'bet_db',
+#         'USER': 'dbmasteruser',
+#         'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
+#         'HOST': 'ls-37ccb7b2b5afa06659a63885755ea14cb98a7652.cltxicpgkrgx.ap-south-1.rds.amazonaws.com',
+#         'PORT': '5432'
+#     }
+# }
+
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bet_db',
-        'USER': 'dbmasteruser',
-        'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
-        'HOST': 'ls-37ccb7b2b5afa06659a63885755ea14cb98a7652.cltxicpgkrgx.ap-south-1.rds.amazonaws.com',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-#render database connection
-# import dj_database_url
-
-# DATABASES = {
-#     'default':dj_database_url.parse(env('DATABASE_URL'))
-    
-#     }
 
 
 
