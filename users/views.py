@@ -45,7 +45,7 @@ class RegistrationApi(APIView):
             first_name = serializer.validated_data['first_name']
             last_name = serializer.validated_data['last_name']
             email = serializer.validated_data['email']
-            if User.objects.get(username=username):
+            if User.objects.filter(username=username).exists():
                 return Response({"message":"username must be quinq!"})
 
             User.objects.create(username=username,password=make_password(password),first_name=first_name,last_name=last_name,email=email)
