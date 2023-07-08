@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 # Create your views here.
-from allusermaster.serializers import superagentSerializer, agentSerializer
+from allusermaster.serializers import superagentSerializer, agentSerializer,clientSerializer
 from django.contrib.auth.models import User,Group
-from allusermaster.models import SuperAgentMaster,AgentMaster
+from allusermaster.models import SuperAgentMaster,AgentMaster,ClientMaster
 from rest_framework.response import Response
 class super_agent_register(APIView):
     def post(self,request,*args,**kwargs):
@@ -22,9 +22,8 @@ class super_agent_register(APIView):
             
             if not obj.exists():
 
-                obj=User.objects.create(username=username,password=password)
-
                 SuperAgentMaster.objects.create(username=username,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission)
+                obj=User.objects.create(username=username,password=password)
                 group = Group.objects.get(name='super_agent')
                 obj.groups.add(group)
                 return Response({"message":"success"})
@@ -33,7 +32,7 @@ class super_agent_register(APIView):
             
 class getuserlist(APIView):
     def get(self,request,*args,**kwargs):
-        obj = User.objects.filter().values('id','username')
+        obj = SuperAgentMaster.objects.filter().values('id','username')
         return Response({"data":obj})
 
 class agent_register(APIView):
@@ -51,11 +50,52 @@ class agent_register(APIView):
             session_commission = serializer.validated_data['session_commission']
             
             
-             
-            User.objects.create(username=username,password=password)
-            obj=User.objects.filter(username=super_agent)
+            obj = User.objects.filter(username=username)
+            
+            if not obj.exists():
+                
+                obj=SuperAgentMaster.objects.filter(id=super_agent)
+                
+                AgentMaster.objects.create(super_agent=obj[0],username=username,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
+                user_obj=User.objects.create(username=username,password=password)
+                group = Group.objects.get(name='agent_master')
+                user_obj.groups.add(group)
+                return Response({"message":"success"})
+            else:
+                return Response({"message":"username already exists!"})
 
-            AgentMaster.objects.create(super_agent=obj[0],username=username,mobile_no=mobile_no,password=password,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
 
-            return Response({"message":"success"})
+class agentuserlist(APIView):
+    def get(self,request,*args,**kwargs):
+        obj = AgentMaster.objects.filter().values('id','username')
+        return Response({"data":obj})
+
+
+class clientmaster_register(APIView):
+    def post(self,request,*args,**kwargs):
+        data=request.data
+        serializer = clientSerializer(data=data)
+        if serializer.is_valid():
+            agent_master = serializer.validated_data['agent_master']
+            username = serializer.validated_data['username']
+            mobile_no = serializer.validated_data['mobile_no']
+            password = serializer.validated_data['password']
+            client_limit = serializer.validated_data['client_limit']
+            match_commission = serializer.validated_data['match_commission']
+            session_commission = serializer.validated_data['session_commission']
+            
+            
+            obj = User.objects.filter(username=username)
+            
+            if not obj.exists():
+                
+                obj=AgentMaster.objects.filter(id=agent_master)
+                
+                ClientMaster.objects.create(agent_master=obj[0],username=username,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission)
+                user_obj=User.objects.create(username=username,password=password)
+                group = Group.objects.get(name='client_master')
+                user_obj.groups.add(group)
+                return Response({"message":"success"})
+            else:
+                return Response({"message":"username already exists!"})
             
