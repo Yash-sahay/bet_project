@@ -35,6 +35,12 @@ class getuserlist(APIView):
         obj = SuperAgentMaster.objects.filter().values('id','username')
         return Response({"data":obj})
 
+
+class GetAllSuperUserAgent(APIView):
+    def get(self,request,*args,**kwargs):
+        obj = SuperAgentMaster.objects.filter().values('username','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission')
+        return Response({"data":obj})
+
 class agent_register(APIView):
     def post(self,request,*args,**kwargs):
         data = request.data
@@ -69,6 +75,10 @@ class agentuserlist(APIView):
     def get(self,request,*args,**kwargs):
         obj = AgentMaster.objects.filter().values('id','username')
         return Response({"data":obj})
+
+class allagentlist(APIView):
+    def get(self,request,*args,**kwargs):
+        agent_list=AgentMaster.objects.filter().values('id','username','')
 
 
 class clientmaster_register(APIView):
