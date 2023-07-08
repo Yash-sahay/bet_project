@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 # Create your views here.
 from allusermaster.serializers import superagentSerializer, agentSerializer
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from allusermaster.models import SuperAgentMaster,AgentMaster
 from rest_framework.response import Response
 class super_agent_register(APIView):
@@ -18,11 +18,18 @@ class super_agent_register(APIView):
             match_commission = serializer.validated_data['match_commission']
             session_commission = serializer.validated_data['session_commission']
             
-             
-            User.objects.create(username=username,password=password)
+            obj = User.objects.filter(username=username)
+            
+            if not obj.exists():
 
-            SuperAgentMaster.objects.create(username=username,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission)
-            return Response({"message":"success"})
+                obj=User.objects.create(username=username,password=password)
+
+                SuperAgentMaster.objects.create(username=username,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission)
+                group = Group.objects.get(name='super_agent')
+                obj.groups.add(group)
+                return Response({"message":"success"})
+            else:
+                return Response({"message":"username already exists!"})
             
 class getuserlist(APIView):
     def get(self,request,*args,**kwargs):
@@ -49,5 +56,6 @@ class agent_register(APIView):
             obj=User.objects.filter(username=super_agent)
 
             AgentMaster.objects.create(super_agent=obj[0],username=username,mobile_no=mobile_no,password=password,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
+
             return Response({"message":"success"})
             
