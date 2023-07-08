@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com','*' ]
+ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com','*']
 #ALLOWED_HOSTS = ['*']
 
 
@@ -88,10 +88,17 @@ WSGI_APPLICATION = 'Bet_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+<<<<<<< HEAD
         'NAME': 'bet_dbbbbbbbb',
         'USER': 'postgres',
         'PASSWORD': '123456',
         'HOST': 'localhost',
+=======
+        'NAME': 'bet_db',
+        'USER': 'dbmasteruser',
+        'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
+        'HOST': 'ls-37ccb7b2b5afa06659a63885755ea14cb98a7652.cltxicpgkrgx.ap-south-1.rds.amazonaws.com',
+>>>>>>> e15ef0b8c549b6c805c9c96c3843101e20513129
         'PORT': '5432'
     }
 }
