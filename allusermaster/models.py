@@ -10,6 +10,7 @@ class SuperAgentMaster(models.Model):
    super_agent_share = models.CharField(max_length=20)
    match_commission = models.CharField(max_length=20)
    session_commission = models.CharField(max_length=20)
+   current_limit = models.CharField(max_length=20,blank=True,null=True)
    added_on = models.DateTimeField(auto_now_add=True)
    updated_on = models.DateTimeField(auto_now=True)
 

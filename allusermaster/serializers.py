@@ -32,4 +32,10 @@ class clientSerializer(serializers.Serializer):
     client_limit = serializers.CharField()
     match_commission = serializers.CharField()
     session_commission = serializers.CharField()
+
+
+class updateuserSerializer(serializers.Serializer):
+    
+    current_limit = serializers.CharField()
+
     
