@@ -96,6 +96,8 @@ class agent_register(APIView):
                 return Response({"message":"success"})
             else:
                 return Response({"message":"username already exists!"})
+        else:
+            return Response({"message":"data is not valid!"})
 
 
 class agentuserlist(APIView):
