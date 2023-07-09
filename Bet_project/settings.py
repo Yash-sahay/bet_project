@@ -88,6 +88,10 @@ WSGI_APPLICATION = 'Bet_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'bet_dbbbbbbbb',
+        # 'USER': 'postgres',
+        # 'PASSWORD': '123456',
+        # 'HOST': 'localhost',
         'NAME': 'bet_db',
         'USER': 'dbmasteruser',
         'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
