@@ -31,8 +31,8 @@ SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com','*' ]
-#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['13.126.225.29', 'localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:3000']
+# ALLOWED_HOSTS = ['*']
 
 
 
@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'users'
+    'corsheaders',
+    'users',
+    'allusermaster'
 
 ]
 
@@ -58,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Bet_project.urls'
@@ -106,12 +110,6 @@ DATABASES = {
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 
@@ -164,3 +162,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
