@@ -29,8 +29,8 @@ class UserProfile(models.Model):
 
 class UserAuthTokens(models.Model):
     user_info = models.ForeignKey(User, on_delete=models.CASCADE)
-    access_token = models.CharField(max_length=200,blank=True, null=True)
-    refresh_token = models.CharField(max_length=200,blank=True, null=True)
+    access_token = models.CharField(max_length=800,blank=True, null=True)
+    refresh_token = models.CharField(max_length=800,blank=True, null=True)
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
