@@ -67,7 +67,7 @@ class UserLoginApi(APIView):
                 usr_ob=User.objects.filter(username=username)
                 l = usr_ob[0].groups.values_list('name',flat = True)
                 refresh = RefreshToken.for_user(usr_ob[0])
-              
+                id=usr_ob[0].id
                
                 user_auth_token_obj = UserAuthTokens.objects.filter(
                 user_info=usr_ob[0])
@@ -79,7 +79,7 @@ class UserLoginApi(APIView):
                     UserAuthTokens.objects.create(user_info=usr_ob[0], access_token=refresh.access_token,
                                                       refresh_token=refresh)
 
-                return Response({'status': True,"role":l, 'message': 'Log In Successful', 'refresh': str(refresh), 'access': str(refresh.access_token),}, status.HTTP_200_OK)
+                return Response({'status': True,"role":l,'id':id,'username':username, 'message': 'Log In Successful', 'refresh': str(refresh), 'access': str(refresh.access_token),}, status.HTTP_200_OK)
             else:
                 
                 return Response({'status': False, 'message': 'Invalid User'}, status.HTTP_200_OK)
