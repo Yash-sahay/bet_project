@@ -5,6 +5,9 @@ from allusermaster.serializers import superagentSerializer, agentSerializer,clie
 from django.contrib.auth.models import User,Group
 from allusermaster.models import SuperAgentMaster,AgentMaster,ClientMaster
 from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password
+
+
 class super_agent_register(APIView):
     def post(self,request,*args,**kwargs):
         data = request.data
@@ -23,7 +26,7 @@ class super_agent_register(APIView):
             if not obj.exists():
 
                 SuperAgentMaster.objects.create(username=username,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission)
-                obj=User.objects.create(username=username,password=password)
+                obj=User.objects.create(username=username,password=make_password(password))
                 group = Group.objects.get(name='super_agent')
                 obj.groups.add(group)
                 return Response({"message":"success"})
@@ -90,7 +93,7 @@ class agent_register(APIView):
                 obj1=SuperAgentMaster.objects.filter(id=super_agent)
                 
                 AgentMaster.objects.create(super_agent=obj1[0],username=username,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
-                user_obj=User.objects.create(username=username,password=password)
+                user_obj=User.objects.create(username=username,password=make_password(password))
                 group = Group.objects.get(name='agent_master')
                 user_obj.groups.add(group)
                 return Response({"message":"success"})
@@ -132,7 +135,7 @@ class clientmaster_register(APIView):
                 obj=AgentMaster.objects.filter(id=agent_master)
                 
                 ClientMaster.objects.create(agent_master=obj[0],username=username,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission)
-                user_obj=User.objects.create(username=username,password=password)
+                user_obj=User.objects.create(username=username,password=make_password(password))
                 group = Group.objects.get(name='client_master')
                 user_obj.groups.add(group)
                 return Response({"message":"success"})
