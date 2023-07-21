@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -31,8 +31,11 @@ SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.126.225.29', '43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:3000']
-# ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['13.126.225.29', '43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:8000']
+ALLOWED_HOSTS = ['*']
+
+
+
 
 
 
@@ -53,10 +56,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -154,16 +157,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
