@@ -87,7 +87,7 @@ class agent_register(APIView):
         data = request.data
         serializer = agentSerializer(data=data)
         if serializer.is_valid():
-            super_agent = serializer.validated_data['super_agent']
+            
             username = serializer.validated_data['username']
             mobile_no = serializer.validated_data['mobile_no']
             password = serializer.validated_data['password']
@@ -134,7 +134,7 @@ class clientmaster_register(APIView):
         data=request.data
         serializer = clientSerializer(data=data)
         if serializer.is_valid():
-            agent_master = serializer.validated_data['agent_master']
+            
             username = serializer.validated_data['username']
             mobile_no = serializer.validated_data['mobile_no']
             password = serializer.validated_data['password']
