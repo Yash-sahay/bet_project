@@ -35,7 +35,7 @@ class super_agent_register(APIView):
 
             if not obj.exists():
 
-                SuperAgentMaster.objects.create(username=username1,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
+                SuperAgentMaster.objects.create(username=username1,password=password,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
                 obj=User.objects.create(username=username1,password=make_password(password))
                 group = Group.objects.get(name='super_agent')
                 obj.groups.add(group)
@@ -107,7 +107,7 @@ class agent_register(APIView):
             
             if not obj.exists():
                  
-                AgentMaster.objects.create(username=username1,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
+                AgentMaster.objects.create(username=username1,password=password,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
                 user_obj=User.objects.create(username=username1,password=make_password(password),created_by=usr[0])
                 group = Group.objects.get(name='agent_master')
                 user_obj.groups.add(group)
@@ -153,7 +153,7 @@ class clientmaster_register(APIView):
             
             if not obj.exists():
                 
-                ClientMaster.objects.create(username=username1,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission)
+                ClientMaster.objects.create(username=username1,password=password,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission)
                 user_obj=User.objects.create(username=username1,password=make_password(password),created_by=usr[0])
                 group = Group.objects.get(name='client_master')
                 user_obj.groups.add(group)

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class SuperAgentMaster(models.Model):
    username = models.CharField(max_length=20,blank=True,null=True)
+   password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=10,blank=True,null=True)
    super_agent_limit = models.CharField(max_length=20)
    super_agent_share = models.CharField(max_length=20)
@@ -18,6 +19,7 @@ class SuperAgentMaster(models.Model):
 
 class AgentMaster(models.Model):
    username = models.CharField(max_length=20,blank=True,null=True)
+   password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=20,blank=True,null=True)
    agent_limit = models.CharField(max_length=20)
    agent_share = models.CharField(max_length=20)
@@ -31,6 +33,7 @@ class AgentMaster(models.Model):
 
 class ClientMaster(models.Model):
    username = models.CharField(max_length=20,blank=True,null=True)
+   password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=10,blank=True,null=True)
    client_limit = models.CharField(max_length=20)
    match_commission = models.CharField(max_length=20)
