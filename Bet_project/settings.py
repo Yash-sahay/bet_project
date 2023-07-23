@@ -13,12 +13,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from datetime import timedelta
 import os
 from pathlib import Path
-
-# import environ
-# env=environ.Env()
-# environ.Env.read_env()
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -29,9 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['13.126.225.29', '43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:8000']
+DEBUG = True                    
+ALLOWED_HOSTS = ['13.126.225.29', '3.7.145.79','43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:8000']
 #ALLOWED_HOSTS = ['*']
 
 
@@ -151,8 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
