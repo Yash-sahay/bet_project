@@ -9,6 +9,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
 
+from allusermaster.utility import role_validations
+
 
 @permission_classes([IsAuthenticated]) 
 class super_agent_register(APIView):
@@ -46,15 +48,8 @@ class super_agent_register(APIView):
      
 class getuserlist(APIView):
     def get(self,request,*args,**kwargs):
-        obj = SuperAgentMaster.objects.filter().values('id','username')
+        obj = SuperAgentMaster.objects.values('id','username')
         return Response({"data":obj})
-
-
-class GetAllSuperUserAgent(APIView):
-    def get(self,request,*args,**kwargs):
-        obj = SuperAgentMaster.objects.filter().values('username','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission')
-        return Response({"superagent_list":obj})
-
 
 
 
@@ -120,13 +115,8 @@ class agent_register(APIView):
 
 class agentuserlist(APIView):
     def get(self,request,*args,**kwargs):
-        obj = AgentMaster.objects.filter().values('id','username')
+        obj = AgentMaster.objects.values('id','username')
         return Response({"data":obj})
-
-class allagentlist(APIView):
-    def get(self,request,*args,**kwargs):
-        agent_list=AgentMaster.objects.filter().values('id','username','super_agent__username','mobile_no','agent_limit','agent_share','match_commission','session_commission')
-        return Response({"agent_list":agent_list})
 
 @permission_classes([IsAuthenticated])
 class clientmaster_register(APIView):
@@ -162,9 +152,72 @@ class clientmaster_register(APIView):
                 return Response({"message":"username already exists!"})
 
 
-
+@permission_classes([IsAuthenticated])
 class AllClientList(APIView):
     def get(self,request,*args,**kwargs):
-        client_list=ClientMaster.objects.filter().values('id','username','agent_master__username','mobile_no','client_limit','match_commission','session_commission')
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='super_agent').exists():
+            client_list=ClientMaster.objects.values('id','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
+            return Response({"client_list":client_list})
+        else:
+            usr=request.user.id
+            client_list=ClientMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
+            return Response({"client_list":client_list})
+        
+
+
+
+
+#user bassed code here==============================================================
+
+@permission_classes([IsAuthenticated]) 
+class UserbassedAllClientList(APIView):
+    def get(self,request,*args,**kwargs):
+        usr=request.user.id
+        client_list=ClientMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
         return Response({"client_list":client_list})
-            
+    
+
+
+@permission_classes([IsAuthenticated]) 
+class UserbassedSuperAgentMaster(APIView):
+    def get(self,request,*args,**kwargs):
+        usr=request.user.id
+        obj = SuperAgentMaster.objects.filter(created_by=usr).values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+        return Response({"superagent_list":obj})
+
+@permission_classes([IsAuthenticated]) 
+class UserbassedAgentMaster(APIView):
+    def get(self,request,*args,**kwargs):
+        usr=request.user.id
+        agent_list=AgentMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+        return Response({"agent_list":agent_list})
+
+
+from django.utils.decorators import method_decorator
+@permission_classes([IsAuthenticated])
+class GetAllSuperUserAgent(APIView):
+    def get(self,request,*args,**kwargs):
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='super_agent').exists():
+            obj = SuperAgentMaster.objects.values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+            return Response({"superagent_list":obj})
+        else:
+             usr=request.user.id
+             obj = SuperAgentMaster.objects.filter(created_by=usr).values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+             return Response({"superagent_list":obj})
+    
+@permission_classes([IsAuthenticated])
+class allagentlist(APIView):
+    def get(self,request,*args,**kwargs):
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='super_agent').exists():
+            agent_list=AgentMaster.objects.values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+            return Response({"agent_list":agent_list})
+        else:
+             usr=request.user.id
+             agent_list=AgentMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+             return Response({"agent_list":agent_list})
