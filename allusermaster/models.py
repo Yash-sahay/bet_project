@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class SuperAgentMaster(models.Model):
+   fullname=models.CharField(max_length=50,blank=True,null=True)
    username = models.CharField(max_length=20,blank=True,null=True)
    password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=10,blank=True,null=True)
@@ -18,6 +19,7 @@ class SuperAgentMaster(models.Model):
 
 
 class AgentMaster(models.Model):
+   fullname=models.CharField(max_length=50,blank=True,null=True)
    username = models.CharField(max_length=20,blank=True,null=True)
    password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=20,blank=True,null=True)
@@ -32,6 +34,7 @@ class AgentMaster(models.Model):
 
 
 class ClientMaster(models.Model):
+   fullname=models.CharField(max_length=50,blank=True,null=True)
    username = models.CharField(max_length=20,blank=True,null=True)
    password=models.CharField(max_length=20,blank=True,null=True)
    mobile_no = models.CharField(max_length=10,blank=True,null=True)

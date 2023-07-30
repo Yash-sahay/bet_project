@@ -1,7 +1,7 @@
 from django import views
 from django.urls import path
 
-from allusermaster.views import super_agent_register,agent_register,getuserlist,agentuserlist,clientmaster_register,GetAllSuperUserAgent,allagentlist,AllClientList,UpdateUserLimit,UserbassedAllClientList,UserbassedSuperAgentMaster,UserbassedAgentMaster
+from allusermaster.views import super_agent_register,agent_register,getuserlist,agentuserlist,clientmaster_register,GetAllSuperUserAgent,allagentlist,AllClientList,UpdateUserLimit,UserbassedAllClientList,UserbassedSuperAgentMaster,UserbassedAgentMaster,UserDashbordApi
                         
 
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('UpdateUserLimit/<int:id>',UpdateUserLimit.as_view(), name='UpdateUserLimit'),
     path('UserbassedAllClientList',UserbassedAllClientList.as_view(),name='UserbassedAllClientList'),
     path('UserbassedSuperAgentMaster',UserbassedSuperAgentMaster.as_view(),name='UserbassedSuperAgentMaster'),
-    path('UserbassedAgentMaster',UserbassedAgentMaster.as_view(),name='UserbassedAgentMaster')
+    path('UserbassedAgentMaster',UserbassedAgentMaster.as_view(),name='UserbassedAgentMaster'),
+    path('userDashbordApi',UserDashbordApi.as_view(),name="userDashbordApi")
    
 ]

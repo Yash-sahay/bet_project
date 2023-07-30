@@ -18,6 +18,7 @@ class super_agent_register(APIView):
         data = request.data
         serializer = superagentSerializer(data=data)
         if serializer.is_valid():
+            fullname=serializer.validated_data['fullname']
             username = serializer.validated_data['username']
             password = serializer.validated_data['password']
             mobile_no = serializer.validated_data['mobile_no']
@@ -37,7 +38,7 @@ class super_agent_register(APIView):
 
             if not obj.exists():
 
-                SuperAgentMaster.objects.create(username=username1,password=password,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
+                SuperAgentMaster.objects.create(fullname=fullname,username=username1,password=password,super_agent_limit=super_agent_limit,mobile_no=mobile_no,super_agent_share=super_agent_share,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
                 obj=User.objects.create(username=username1,password=make_password(password))
                 group = Group.objects.get(name='super_agent')
                 obj.groups.add(group)
@@ -82,7 +83,7 @@ class agent_register(APIView):
         data = request.data
         serializer = agentSerializer(data=data)
         if serializer.is_valid():
-            
+            fullname=serializer.validated_data['fullname']
             username = serializer.validated_data['username']
             mobile_no = serializer.validated_data['mobile_no']
             password = serializer.validated_data['password']
@@ -102,7 +103,7 @@ class agent_register(APIView):
             
             if not obj.exists():
                  
-                AgentMaster.objects.create(username=username1,password=password,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
+                AgentMaster.objects.create(fullname=fullname,username=username1,password=password,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
                 user_obj=User.objects.create(username=username1,password=make_password(password),created_by=usr[0])
                 group = Group.objects.get(name='agent_master')
                 user_obj.groups.add(group)
@@ -124,7 +125,7 @@ class clientmaster_register(APIView):
         data=request.data
         serializer = clientSerializer(data=data)
         if serializer.is_valid():
-            
+            fullname=serializer.validated_data['fullname']
             username = serializer.validated_data['username']
             mobile_no = serializer.validated_data['mobile_no']
             password = serializer.validated_data['password']
@@ -143,13 +144,15 @@ class clientmaster_register(APIView):
             
             if not obj.exists():
                 
-                ClientMaster.objects.create(username=username1,password=password,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission)
-                user_obj=User.objects.create(username=username1,password=make_password(password),created_by=usr[0])
+                ClientMaster.objects.create(fullname=fullname,username=username1,password=password,mobile_no=mobile_no,client_limit=client_limit,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
+                user_obj=User.objects.create(username=username1,password=make_password(password))
                 group = Group.objects.get(name='client_master')
                 user_obj.groups.add(group)
                 return Response({"message":"success"})
             else:
                 return Response({"message":"username already exists!"})
+        else:
+            return Response({"message":"data is not valid!"})
 
 
 @permission_classes([IsAuthenticated])
@@ -175,7 +178,7 @@ class AllClientList(APIView):
 class UserbassedAllClientList(APIView):
     def get(self,request,*args,**kwargs):
         usr=request.user.id
-        client_list=ClientMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
+        client_list=ClientMaster.objects.filter(created_by=usr).values('id','fullname','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
         return Response({"client_list":client_list})
     
 
@@ -184,14 +187,14 @@ class UserbassedAllClientList(APIView):
 class UserbassedSuperAgentMaster(APIView):
     def get(self,request,*args,**kwargs):
         usr=request.user.id
-        obj = SuperAgentMaster.objects.filter(created_by=usr).values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+        obj = SuperAgentMaster.objects.filter(created_by=usr).values('id','fullname','username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
         return Response({"superagent_list":obj})
 
 @permission_classes([IsAuthenticated]) 
 class UserbassedAgentMaster(APIView):
     def get(self,request,*args,**kwargs):
         usr=request.user.id
-        agent_list=AgentMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+        agent_list=AgentMaster.objects.filter(created_by=usr).values('id','fullname','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
         return Response({"agent_list":agent_list})
 
 
@@ -202,11 +205,11 @@ class GetAllSuperUserAgent(APIView):
         usr = request.user.username
         usr_ob = User.objects.filter(username=usr)
         if usr_ob[0].groups.filter(name='super_agent').exists():
-            obj = SuperAgentMaster.objects.values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+            obj = SuperAgentMaster.objects.values('id','fullname','username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
             return Response({"superagent_list":obj})
         else:
              usr=request.user.id
-             obj = SuperAgentMaster.objects.filter(created_by=usr).values('username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
+             obj = SuperAgentMaster.objects.filter(created_by=usr).values('id','fullname','username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
              return Response({"superagent_list":obj})
     
 @permission_classes([IsAuthenticated])
@@ -215,9 +218,37 @@ class allagentlist(APIView):
         usr = request.user.username
         usr_ob = User.objects.filter(username=usr)
         if usr_ob[0].groups.filter(name='super_agent').exists():
-            agent_list=AgentMaster.objects.values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+            agent_list=AgentMaster.objects.values('id','fullname','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
             return Response({"agent_list":agent_list})
         else:
              usr=request.user.id
-             agent_list=AgentMaster.objects.filter(created_by=usr).values('id','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
+             agent_list=AgentMaster.objects.filter(created_by=usr).values('id','fullname','fullname','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
              return Response({"agent_list":agent_list})
+        
+@permission_classes([IsAuthenticated])
+class UserDashbordApi(APIView):
+    def get(self,request,*args,**kwargs):
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='admin').exists():
+            super_agent_count = User.objects.filter(groups__name='super_agent').count()
+            agent_master_count = User.objects.filter(groups__name='agent_master').count()
+            client_count = User.objects.filter(groups__name='client_master').count()
+            data={
+                "super_agent_count":super_agent_count,
+                "agent_master_count":agent_master_count,
+                "client_count":client_count
+
+            }
+            return Response(data)
+        else:
+            agent_master_count=AgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            super_agent_count=SuperAgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            client_count=ClientMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            data={
+                "super_agent_count":super_agent_count,
+                "agent_master_count":agent_master_count,
+                "client_count":client_count
+            }
+            return Response(data)
+       

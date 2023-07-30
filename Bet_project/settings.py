@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
+    #'corsheaders',
     'users',
     'allusermaster'
 
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
 
 ]
 
@@ -89,25 +89,25 @@ WSGI_APPLICATION = 'Bet_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bet_db',
-        'USER': 'dbmasteruser',
-        'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
-        'HOST': 'ls-37ccb7b2b5afa06659a63885755ea14cb98a7652.cltxicpgkrgx.ap-south-1.rds.amazonaws.com',
-        'PORT': '5432'
-    }
-}
-
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'bet_db',
+#         'USER': 'dbmasteruser',
+#         'PASSWORD': '!:[m#nAgI4|~6;EGlZ1zv=+bO~>O}DjO',
+#         'HOST': 'ls-37ccb7b2b5afa06659a63885755ea14cb98a7652.cltxicpgkrgx.ap-south-1.rds.amazonaws.com',
+#         'PORT': '5432'
 #     }
 # }
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 
@@ -149,10 +149,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+STATIC_URL = 'static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
