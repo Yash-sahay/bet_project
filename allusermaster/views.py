@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
 
 from allusermaster.utility import role_validations
+from users.models import UserBalanceInfo, UserTransactionHistory
 
 
 @permission_classes([IsAuthenticated]) 
@@ -252,3 +253,47 @@ class UserDashbordApi(APIView):
             }
             return Response(data)
        
+       
+@permission_classes([IsAuthenticated])
+class UserDashbordApi(APIView):
+    def get(self,request,*args,**kwargs):
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='admin').exists():
+            super_agent_count = User.objects.filter(groups__name='super_agent').count()
+            agent_master_count = User.objects.filter(groups__name='agent_master').count()
+            client_count = User.objects.filter(groups__name='client_master').count()
+            data={
+                "super_agent_count":super_agent_count,
+                "agent_master_count":agent_master_count,
+                "client_count":client_count
+
+            }
+            return Response(data)
+        else:
+            blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0]).values('user_info','user_info__username','current_coins')
+            agent_master_count=AgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            super_agent_count=SuperAgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            client_count=ClientMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            data={
+                "super_agent_count":super_agent_count,
+                "agent_master_count":agent_master_count,
+                "client_count":client_count,
+                "user_info":blnc_user[0]['user_info'],
+                "user_info__username":blnc_user[0]['user_info__username'],
+                "current_coins":blnc_user[0]['current_coins'],
+            }
+            return Response(data)
+       
+@permission_classes([IsAuthenticated])
+class UserTransactionHistoryApi(APIView):
+   def get(self,request,*args,**kwargs):
+        usr = request.user.username
+        usr_ob = User.objects.filter(username=usr)
+        if usr_ob[0].groups.filter(name='admin').exists():
+             hist_ob=UserTransactionHistory.objects.values('id','user', 'credit_coins','debit_coins','net_coins','game_name','added_on')
+             return Response({"hist_ob":hist_ob})
+        else:
+             hist_ob=UserTransactionHistory.objects.filter(user=usr_ob[0]).values('id','user', 'user__username','credit_coins','debit_coins','net_coins','game_name','added_on')
+             return Response({"hist_ob":hist_ob})
+

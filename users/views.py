@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from users.models import UserAuthTokens
+from users.models import UserAuthTokens, UserBalanceInfo, UserTransactionHistory
 from users.serializers import RegisterSerializer,LoginSerializer
 from rest_framework import status, viewsets, mixins
 from django.contrib.auth.models import User
@@ -52,7 +52,6 @@ class RegistrationApi(APIView):
             return Response({"message":"success"})
         return Response({"message":"somethings went wrong"})
 
-
 from rest_framework_simplejwt.tokens import RefreshToken
 class UserLoginApi(APIView):
     def post(self,request):
@@ -65,6 +64,10 @@ class UserLoginApi(APIView):
             if user:
                 login(request, user)
                 usr_ob=User.objects.filter(username=username)
+                blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0])
+                if not blnc_user.exists():
+                    UserBalanceInfo.objects.create(user_info=usr_ob[0])
+                    UserTransactionHistory.objects.create(user=usr_ob[0])
                 l = usr_ob[0].groups.values_list('name',flat = True)
                 refresh = RefreshToken.for_user(usr_ob[0])
                 id=usr_ob[0].id
