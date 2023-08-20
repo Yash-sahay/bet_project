@@ -56,6 +56,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserLoginApi(APIView):
     def post(self,request):
         data = request.data
+        print(data)
         serializer = LoginSerializer(data=data)
         if serializer.is_valid():
             username = serializer.validated_data['username']
@@ -81,10 +82,8 @@ class UserLoginApi(APIView):
                 else:
                     UserAuthTokens.objects.create(user_info=usr_ob[0], access_token=refresh.access_token,
                                                       refresh_token=refresh)
-
                 return Response({'status': True,"role":l,'id':id,'username':username, 'message': 'Log In Successful', 'refresh': str(refresh), 'access': str(refresh.access_token),}, status.HTTP_200_OK)
             else:
-                
                 return Response({'status': False, 'message': 'Invalid User'}, status.HTTP_200_OK)
         return Response({'status': False, 'message': 'went wrong'}, status.HTTP_200_OK)
     
