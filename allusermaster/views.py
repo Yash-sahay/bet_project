@@ -161,7 +161,7 @@ class AllClientList(APIView):
     def get(self,request,*args,**kwargs):
         usr = request.user.username
         usr_ob = User.objects.filter(username=usr)
-        if usr_ob[0].groups.filter(name='super_agent').exists():
+        if usr_ob[0].groups.filter(name='admin').exists():
             client_list=ClientMaster.objects.values('id','username','password','mobile_no','client_limit','match_commission','session_commission','created_by__username')
             return Response({"client_list":client_list})
         else:
@@ -205,7 +205,7 @@ class GetAllSuperUserAgent(APIView):
     def get(self,request,*args,**kwargs):
         usr = request.user.username
         usr_ob = User.objects.filter(username=usr)
-        if usr_ob[0].groups.filter(name='super_agent').exists():
+        if usr_ob[0].groups.filter(name='admin').exists():
             obj = SuperAgentMaster.objects.values('id','fullname','username','password','mobile_no','super_agent_limit','super_agent_share','match_commission','session_commission','created_by__username')
             return Response({"superagent_list":obj})
         else:
@@ -218,7 +218,7 @@ class allagentlist(APIView):
     def get(self,request,*args,**kwargs):
         usr = request.user.username
         usr_ob = User.objects.filter(username=usr)
-        if usr_ob[0].groups.filter(name='super_agent').exists():
+        if usr_ob[0].groups.filter(name='admin').exists():
             agent_list=AgentMaster.objects.values('id','fullname','username','password','mobile_no','agent_limit','agent_share','match_commission','session_commission','created_by__username')
             return Response({"agent_list":agent_list})
         else:
@@ -270,18 +270,50 @@ class UserDashbordApi(APIView):
 
             }
             return Response(data)
-        else:
-            blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0]).values('user_info','user_info__username','current_coins')
+        elif usr_ob[0].groups.filter(name='super_agent').exists():
+            # agent_master_count = User.objects.filter(groups__name='agent_master').count()
+            # client_count = User.objects.filter(groups__name='client_master').count()
             agent_master_count=AgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
-            super_agent_count=SuperAgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
             client_count=ClientMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0]).values('user_info','user_info__username','current_coins')
             data={
-                "super_agent_count":super_agent_count,
+               "user_info":blnc_user[0]['user_info'],
+                "user_info__username":blnc_user[0]['user_info__username'],
+                "current_coins":blnc_user[0]['current_coins'],
                 "agent_master_count":agent_master_count,
-                "client_count":client_count,
+                "client_count":client_count
+
+            }
+            return Response(data)
+        
+        elif usr_ob[0].groups.filter(name='agent_master').exists():
+           
+           #client_count = User.objects.filter(groups__name='client_master').count()
+            client_count=ClientMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0]).values('user_info','user_info__username','current_coins')
+
+            data={
                 "user_info":blnc_user[0]['user_info'],
                 "user_info__username":blnc_user[0]['user_info__username'],
                 "current_coins":blnc_user[0]['current_coins'],
+                "client_count":client_count
+
+            }
+            return Response(data)
+
+    
+        else:
+            blnc_user=UserBalanceInfo.objects.filter(user_info=usr_ob[0]).values('user_info','user_info__username','current_coins')
+            # agent_master_count=AgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            # super_agent_count=SuperAgentMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            # client_count=ClientMaster.objects.filter(created_by__id=usr_ob[0].id).count()
+            data={
+                # "super_agent_count":super_agent_count,
+                # "agent_master_count":agent_master_count,
+                # "client_count":client_count,
+                "user_info":blnc_user[0]['user_info'],
+                "user_info__username":blnc_user[0]['user_info__username'],
+                "current_coins":blnc_user[0]['current_coins']
             }
             return Response(data)
        
