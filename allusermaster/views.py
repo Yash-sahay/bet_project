@@ -104,8 +104,8 @@ class agent_register(APIView):
             
             if not obj.exists():
                  
-                AgentMaster.objects.create(fullname=fullname,username=username1,password=password,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission)
-                user_obj=User.objects.create(username=username1,password=make_password(password),created_by=usr[0])
+                AgentMaster.objects.create(fullname=fullname,username=username1,password=password,mobile_no=mobile_no,agent_limit=agent_limit,agent_share=agent_share,match_commission=match_commission,session_commission=session_commission,created_by=usr[0])
+                user_obj=User.objects.create(username=username1,password=make_password(password))
                 group = Group.objects.get(name='agent_master')
                 user_obj.groups.add(group)
                 return Response({"message":"success"})
@@ -139,7 +139,7 @@ class clientmaster_register(APIView):
             usr=User.objects.filter(username=usr)
             sucount=AgentMaster.objects.filter(created_by__id=usr[0].id).count()
             sucount+1
-            username1='A'+ str(sucount+1)+username
+            username1='CL'+ str(sucount+1)+username
             print(username1)
             obj = User.objects.filter(username=username1)
             
