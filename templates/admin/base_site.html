@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+ <img src="{% static 'logo/logo.png' %}" height="40px" style="margin-left: 6px"/>
+<h1 id="site-name" style="font-family: cursive; text-align: center;"  ><a href="{% url 'admin:index' %}">Auto-Best Administration</a></h1>
+{% endblock %}
+
+
+{% block nav-global %}{% endblock %}
