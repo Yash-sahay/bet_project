@@ -169,7 +169,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-STATIC_ROOT      =  BASE_DIR.child('static')
+# STATIC_ROOT      =  BASE_DIR.child('static')
 
 
 SIMPLE_JWT = {
