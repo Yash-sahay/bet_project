@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from datetime import timedelta
 import os
-from pathlib import Path
+#from pathlib import Path
 import os
+from unipath import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
