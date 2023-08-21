@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from datetime import timedelta
-import os
 from pathlib import Path
 import os
 
@@ -31,8 +30,8 @@ SECRET_KEY = 'django-insecure-ebsztytmf&9-vzb%%ndm6d)7fq1^5w0bt8z@x!bpuxs6*yg(o=
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True                    
-ALLOWED_HOSTS = ['13.126.225.29', '3.7.145.79','43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:8000']
-#ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['13.126.225.29', '3.7.145.79','43.205.243.141','localhost', '127.0.0.0/16', 'dns.com','*', 'http://localhost:8000']
+ALLOWED_HOSTS = ['*']
 
 
 
