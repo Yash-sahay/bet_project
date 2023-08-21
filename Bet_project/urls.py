@@ -23,3 +23,5 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('allusermaster/', include("allusermaster.urls")),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+6
