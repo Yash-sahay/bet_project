@@ -56,7 +56,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserLoginApi(APIView):
     def post(self,request):
         data = request.data
-        print(data)
+      
         serializer = LoginSerializer(data=data)
         if serializer.is_valid():
             username = serializer.validated_data['username']
