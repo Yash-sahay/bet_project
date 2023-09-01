@@ -3,6 +3,23 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+class MasterUser(models.Model):
+   fullname=models.CharField(max_length=50,blank=True,null=True)
+   username = models.CharField(max_length=20,blank=True,null=True)
+   password=models.CharField(max_length=20,blank=True,null=True)
+   mobile_no = models.CharField(max_length=10,blank=True,null=True)
+   master_limit = models.CharField(max_length=20)
+   master_share = models.CharField(max_length=20)
+   match_commission = models.CharField(max_length=20)
+   session_commission = models.CharField(max_length=20)
+   created_by=models.ForeignKey(User,on_delete=models.CASCADE,null=True, blank=True)
+   added_on = models.DateTimeField(auto_now_add=True)
+   updated_on = models.DateTimeField(auto_now=True)
+
+
+
+
+
 class SuperAgentMaster(models.Model):
    fullname=models.CharField(max_length=50,blank=True,null=True)
    username = models.CharField(max_length=20,blank=True,null=True)

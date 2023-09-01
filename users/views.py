@@ -87,6 +87,8 @@ class UserLoginApi(APIView):
                 return Response({'status': False, 'message': 'Invalid User'}, status.HTTP_200_OK)
         return Response({'status': False, 'message': 'went wrong'}, status.HTTP_200_OK)
     
+
+    
 @permission_classes([IsAuthenticated])    
 class LogoutView(APIView) :
     def get(self,request):
